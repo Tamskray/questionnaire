@@ -1,0 +1,35 @@
+.card-container {
+  border: 1px solid gray;
+  padding: 12px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-basis: 30%;
+}
+
+.card-title {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.card-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+
+.menu-container {
+    position: absolute;
+    padding: 1rem;
+    border: 1px solid gray;
+    top: 0;
+    right: 0;
+}
