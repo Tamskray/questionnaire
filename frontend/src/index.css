@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'Ubuntu Mono', monospace;
+}
+
 .cards-container {
   display: flex;
   flex-direction: row;
