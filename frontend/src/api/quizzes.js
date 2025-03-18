@@ -11,5 +11,7 @@ export const getAllQuizzes = () => {
 };
 
 export const getQuiz = (id) => {
-  return quizzes.find((quiz) => quiz.id === parseInt(id));
+  const quiz = quizzes.find((quiz) => quiz.id === parseInt(id));
+  console.log(quiz)
+  return quiz;
 }

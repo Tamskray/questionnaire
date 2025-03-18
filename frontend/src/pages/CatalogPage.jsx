@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
-import { quizzes } from "../quizzes";
 import { getAllQuizzes } from "../api/quizzes";
 
 function CatalogPage() {
@@ -11,13 +10,13 @@ function CatalogPage() {
       const info = getAllQuizzes();
 
       setQuizzesInfo(info);
-    }, [quizzesInfo]
+    }, []
   )
 
   return (
     <div>
       <h1>Quiz Catalog</h1>
-      <div className="cards-container">
+      <div className="cards-container container">
         {quizzesInfo.map((quiz) => (
           <Card key={quiz.id} quiz={quiz} />
         ))}

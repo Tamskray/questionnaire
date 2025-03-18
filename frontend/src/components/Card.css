@@ -1,12 +1,11 @@
 .card-container {
   border: 1px solid gray;
   padding: 12px;
-  min-height: 150px;
+  min-height: 200px;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex-basis: 30%;
 }
 
 .card-title {

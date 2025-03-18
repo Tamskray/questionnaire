@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { quizzes } from "../quizzes";
 import { getQuiz } from "../api/quizzes";
+import Question from "../components/Question";
+import "./QuizPage.css";
 
 function QuizPage() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ function QuizPage() {
   useEffect(() => {
     const foundQuiz = getQuiz(id);
     setQuiz(foundQuiz);
-  }, [quiz]);
+  }, []);
 
   if (!quiz) {
     return <h1>Quiz Not Found</h1>;
@@ -19,20 +20,22 @@ function QuizPage() {
   return (
     <div>
       <h1>{quiz.name}</h1>
-      <p>{quiz.description}</p>
-      <h3>Questions:</h3>
-      <ul>
-        {quiz.questions.map((q, index) => (
-          <li key={index}>
-            <p>{q.question}</p>
-            <ul>
-              {q.answers.map((answer, i) => (
-                <li key={i}>{answer}</li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
+      <p className="description">{quiz.description}</p>
+      <div className="questions-block">
+        <h3>Questions:</h3>
+        <div className="questions-container">
+          {quiz.questions.map((q, index) => (
+            <Question
+              key={index}
+              index={index + 1}
+              question={q.question}
+              type={q.type}
+              answers={q.answers}
+              correctAnswer={q.correctAnswer}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
