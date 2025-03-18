@@ -1,29 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap");
 * {
   padding: 0;
   margin: 0;
-  font-family: 'Ubuntu Mono', monospace;
+  font-family: "Ubuntu Mono", monospace;
   box-sizing: border-box;
 }
 
-.container{
+.container {
   padding: 2rem 3rem;
 }
 
 .cards-container {
+  max-width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-}
 
-@media (max-width: 1024px) {
-  .cards-container {
+  @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
-}
 
-@media (max-width: 600px) {
-  .cards-container {
+  @media (max-width: 600px) {
     grid-template-columns: 1fr; /* 1 column */
   }
 }

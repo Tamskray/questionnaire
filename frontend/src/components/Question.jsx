@@ -1,4 +1,12 @@
-function Question({ index, question, type, answers, correctAnswer }) {
+function Question({
+  index,
+  question,
+  type,
+  answers,
+  correctAnswer,
+  handleChange,
+  chosen
+}) {
   var questionStyle = null;
   switch (type) {
     case "single":
@@ -8,7 +16,14 @@ function Question({ index, question, type, answers, correctAnswer }) {
           <div className="answers">
             {answers.map((answer, i) => (
               <div className="answer" key={i}>
-                <input type="radio" name={question} />
+                <input
+                  type="radio"
+                  name={question}
+                  required
+                  onChange={handleChange}
+                  value={answer}
+                  checked={chosen && chosen===answer}
+                />
                 <label>{answer}</label>
               </div>
             ))}
@@ -23,7 +38,14 @@ function Question({ index, question, type, answers, correctAnswer }) {
           <div className="answers">
             {answers.map((answer, i) => (
               <div className="answer" key={i}>
-                <input type="checkbox" name={question} />
+                <input
+                  type="checkbox"
+                  name={question}
+                  required
+                  onChange={handleChange}
+                  value={answer}
+                  checked={chosen?.includes(answer)}
+                />
                 <label>{answer}</label>
               </div>
             ))}
@@ -36,7 +58,14 @@ function Question({ index, question, type, answers, correctAnswer }) {
         <div>
           <p>{question}</p>
           <div className="answers">
-            <input className="answer" type="text" />
+            <input
+              className="answer"
+              name={question}
+              type="text"
+              required
+              onChange={handleChange}
+              value={chosen}
+            />
           </div>
         </div>
       );
@@ -47,7 +76,7 @@ function Question({ index, question, type, answers, correctAnswer }) {
 
   return (
     <div className="question-container">
-      <div>{index}</div>
+      <div className="question-number">{index}</div>
       {questionStyle}
     </div>
   );

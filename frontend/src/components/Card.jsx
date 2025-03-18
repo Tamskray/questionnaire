@@ -30,7 +30,9 @@ function Card({ quiz }) {
           </button>
         </div>
       )}
-      <div className="card-description">{quiz.description}</div>
+      <div className="card-description">
+        <p>{quiz.description}</p>
+      </div>
       <div className="card-header">
         <div>Questions: {quiz.questionCount}</div>
         <div>Completions: {quiz.completions}</div>
