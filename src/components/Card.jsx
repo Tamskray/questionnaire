@@ -13,13 +13,13 @@ function Card() {
       <div className="card-header">
         <div className="card-title">quiz title</div>
         <FaEllipsisVertical onClick={toggleMenu} />
-        {menuOpen && (
-          <div className="menu-container">
-            <div>edit</div>
-            <div>delete</div>
-          </div>
-        )}
       </div>
+      {menuOpen && (
+        <div className="menu-container">
+          <div>edit</div>
+          <div>delete</div>
+        </div>
+      )}
       <div className="card-description">desc</div>
       <div className="card-header">
         <div>questions</div>

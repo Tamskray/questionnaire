@@ -2,6 +2,7 @@
   border: 1px solid gray;
   padding: 12px;
   min-height: 150px;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -28,8 +29,9 @@
 
 .menu-container {
     position: absolute;
-    padding: 1rem;
+    padding: 0.5rem;
     border: 1px solid gray;
-    top: 0;
-    right: 0;
+    top: 40px;
+    width: 50px;
+    right: 1rem;
 }
