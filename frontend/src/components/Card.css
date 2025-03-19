@@ -49,4 +49,7 @@
   text-align: left;
   cursor: pointer;
   font-size: 14px;
+  min-height: auto;
+  min-width: auto;
+  margin: 0 0;
 }

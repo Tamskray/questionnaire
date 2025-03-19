@@ -4,9 +4,9 @@ import "./App.css";
 import CatalogPage from "./pages/CatalogPage";
 import MainLayout from "./layouts/MainLayout";
 import QuizPage from "./pages/QuizPage";
+import CreatePage from "./pages/CreatePage";
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -15,6 +15,7 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<CatalogPage />} />
             <Route path="/quiz/:id" element={<QuizPage />} />
+            <Route path="/quiz/create" element={<CreatePage />} />
           </Route>
         </Routes>
       </BrowserRouter>
