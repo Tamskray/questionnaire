@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const CompletionSchema = new mongoose.Schema({
   quizId: { type: mongoose.Schema.Types.ObjectId, ref: "Quiz", required: true },
+  userName: { type: String, required: true },
   answers: [
     {
       questionId: { type: mongoose.Schema.Types.ObjectId, required: true },

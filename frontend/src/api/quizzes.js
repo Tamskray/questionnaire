@@ -94,3 +94,34 @@ export const deleteQuiz = async (id) => {
     throw error;
   }
 };
+
+export const submitQuiz = async (
+  quizId,
+  userName,
+  answers,
+  completionTime
+) => {
+  try {
+    const response = await fetch(`/api/completions/${quizId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userName,
+        answers,
+        completionTime,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit quiz");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error submitting quiz completion:", error);
+    throw error;
+  }
+};
