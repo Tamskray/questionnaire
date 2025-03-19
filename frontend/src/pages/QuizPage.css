@@ -3,6 +3,15 @@
   max-width: 70%;
 }
 
+.timer {
+  font-weight: 700;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  border: 1px solid black;
+  padding: 1rem;
+}
+
 .questions-block {
   padding: 2rem;
   max-width: 800px;

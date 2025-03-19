@@ -9,15 +9,29 @@ function QuizPage() {
   const { id } = useParams();
   const [quiz, setQuiz] = useState(null);
   const [formData, setFormData] = useState({});
+  const [timeSpent, setTimeSpent] = useState(0);
 
   useEffect(() => {
     const foundQuiz = getQuiz(id);
     setQuiz(foundQuiz);
 
-    const savedData = Cookies.get("quizData");
+    const savedData = Cookies.get(`quizData_${id}`);
     if (savedData) {
       setFormData(JSON.parse(savedData));
     }
+
+    const savedTime = Cookies.get(`quizTime_${id}`);
+    setTimeSpent(savedTime ? parseInt(savedTime) : 0);
+
+    const timer = setInterval(() => {
+      setTimeSpent((prev) => {
+        const newTime = prev + 1;
+        Cookies.set(`quizTime_${id}`, newTime, { expires: 1 });
+        return newTime;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, []);
 
   if (!quiz) {
@@ -28,7 +42,6 @@ function QuizPage() {
     const { name, value, type, checked } = event.target;
 
     let updatedData = { ...formData };
-      console.log(updatedData);
 
     if (type === "checkbox") {
       const currentValues = formData[name] || [];
@@ -41,8 +54,7 @@ function QuizPage() {
       updatedData[name] = value;
     }
     setFormData(updatedData);
-      console.log(updatedData);
-    Cookies.set("quizData", JSON.stringify(updatedData), { expires: 1 });
+    Cookies.set(`quizData_${id}`, JSON.stringify(updatedData), { expires: 1 });
   };
 
   const handleSubmit = (event) => {
@@ -53,16 +65,32 @@ function QuizPage() {
   const handleClear = (event) => {
     event.preventDefault();
     setFormData({});
-    Cookies.remove("quizData");
+    Cookies.remove(`quizData_${id}`);
+    console.log(formData);
   };
 
   return (
     <div>
       <h1>{quiz.name}</h1>
       <p className="description">{quiz.description}</p>
+      <div className="timer">
+        Time Spent: {String(Math.floor(timeSpent / 60)).padStart(2, "0")}:
+        {String(timeSpent % 60).padStart(2, "0")}
+      </div>
       <div className="questions-block">
         <h3>Questions:</h3>
         <form className="questions-container" method="post">
+          <label className="answers">
+            Enter Your Name:
+            <input
+              className="answer"
+              name="username"
+              type="text"
+              required
+              onChange={handleChange}
+              value={formData.username || ""}
+            />
+          </label>
           {quiz.questions.map((q, index) => (
             <Question
               key={index}

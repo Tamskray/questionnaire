@@ -22,7 +22,7 @@ function Question({
                   required
                   onChange={handleChange}
                   value={answer}
-                  checked={chosen && chosen===answer}
+                  checked={chosen || false}
                 />
                 <label>{answer}</label>
               </div>
@@ -44,7 +44,7 @@ function Question({
                   required
                   onChange={handleChange}
                   value={answer}
-                  checked={chosen?.includes(answer)}
+                  checked={chosen?.includes(answer) || false}
                 />
                 <label>{answer}</label>
               </div>
@@ -64,7 +64,7 @@ function Question({
               type="text"
               required
               onChange={handleChange}
-              value={chosen}
+              value={chosen || ""}
             />
           </div>
         </div>
