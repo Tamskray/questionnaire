@@ -1,11 +1,16 @@
-import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
+const mongoose = require("mongoose");
 
-dotenv.config();
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("MongoDB Connected...");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1);
+  }
+};
 
-const sequelize = new Sequelize(process.env.PG_URI, {
-  dialect: "postgres",
-  logging: false,
-});
-
-export default sequelize;
+module.exports = connectDB;
