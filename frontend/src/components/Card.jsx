@@ -1,10 +1,9 @@
 import { FaEllipsisVertical } from "react-icons/fa6";
 import "./Card.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 
 function Card({ quiz, onMenuOpen, activeMenu }) {
-  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const menuRef = useRef(null);
   const handleRunQuiz = () => navigate(`/quiz/${quiz.id}`);
@@ -12,26 +11,20 @@ function Card({ quiz, onMenuOpen, activeMenu }) {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuOpen(false);
+        onMenuOpen(null);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [onMenuOpen]);
 
-  useEffect(() => {
-    if (activeMenu !== quiz.id) {
-      setMenuOpen(false);
-    }
-  }, [activeMenu, quiz.id]);
+  const toggleMenu = (event) => {
+    event.stopPropagation();
 
-  const toggleMenu = () => {
-    if (menuOpen) {
-      setMenuOpen(false);
+    if (activeMenu === quiz.id) {
       onMenuOpen(null);
     } else {
-      setMenuOpen(true);
       onMenuOpen(quiz.id);
     }
   };
@@ -42,7 +35,7 @@ function Card({ quiz, onMenuOpen, activeMenu }) {
         <div className="card-title">{quiz.name}</div>
         <FaEllipsisVertical onClick={toggleMenu} />
       </div>
-      {menuOpen && (
+      {activeMenu === quiz.id && (
         <div className="menu-container" ref={menuRef}>
           <button className="menu-item" onClick={handleRunQuiz}>
             Run Quiz
