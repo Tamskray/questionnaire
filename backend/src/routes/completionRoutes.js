@@ -4,7 +4,6 @@ const Quiz = require("../models/Quiz");
 
 const router = express.Router();
 
-// 🟢 SUBMIT quiz answers (Complete a quiz)
 router.post("/:quizId", async (req, res) => {
   try {
     const { quizId } = req.params;
@@ -16,7 +15,6 @@ router.post("/:quizId", async (req, res) => {
     const newCompletion = new Completion({ quizId, answers, completionTime });
     await newCompletion.save();
 
-    // Increment completion count in Quiz
     await Quiz.findByIdAndUpdate(quizId, { $inc: { completions: 1 } });
 
     res

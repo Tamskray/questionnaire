@@ -33,11 +33,11 @@
   }
 
   @media (max-width: 600px) {
-    grid-template-columns: 1fr; /* 1 column */
+    grid-template-columns: 1fr; 
   }
 }
 
-input[type="text"] {
+input[type="text"], textarea {
   min-height: 30px;
   min-width: 200px;
   padding: 3px;

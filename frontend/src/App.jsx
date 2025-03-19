@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import "./App.css";
 import CatalogPage from "./pages/CatalogPage";
@@ -16,6 +15,7 @@ function App() {
             <Route path="/" element={<CatalogPage />} />
             <Route path="/quiz/:id" element={<QuizPage />} />
             <Route path="/quiz/create" element={<CreatePage />} />
+            <Route path="/quiz/edit/:id" element={<CreatePage />} />
           </Route>
         </Routes>
       </BrowserRouter>

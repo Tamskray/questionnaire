@@ -3,7 +3,6 @@ import { useParams } from "react-router";
 import Cookies from "js-cookie";
 import { getQuiz } from "../api/quizzes";
 import Question from "../components/Question";
-import "./QuizPage.css";
 
 function QuizPage() {
   const { id } = useParams();
@@ -12,8 +11,12 @@ function QuizPage() {
   const [timeSpent, setTimeSpent] = useState(0);
 
   useEffect(() => {
-    const foundQuiz = getQuiz(id);
-    setQuiz(foundQuiz);
+    const fetchQuizData = async () => {
+      const foundQuiz = await getQuiz(id);
+      setQuiz(foundQuiz);
+    };
+
+    fetchQuizData();
 
     const savedData = Cookies.get(`quizData_${id}`);
     if (savedData) {
@@ -44,15 +47,18 @@ function QuizPage() {
     let updatedData = { ...formData };
 
     if (type === "checkbox") {
-      const currentValues = formData[name] || [];
+      const currentValues = updatedData[name] || [];
       if (checked) {
         updatedData[name] = [...currentValues, value];
       } else {
         updatedData[name] = currentValues.filter((v) => v !== value);
       }
+    } else if (type === "radio") {
+      updatedData[name] = value;
     } else {
       updatedData[name] = value;
     }
+
     setFormData(updatedData);
     Cookies.set(`quizData_${id}`, JSON.stringify(updatedData), { expires: 1 });
   };
@@ -81,13 +87,14 @@ function QuizPage() {
         <h3>Questions:</h3>
         <form className="questions-container" method="post">
           <label className="answers">
-            Enter Your Name:
+            Your Name:
             <input
               className="answer"
               name="username"
               type="text"
               required
               onChange={handleChange}
+              placeholder="Enter your name"
               value={formData.username || ""}
             />
           </label>
@@ -95,12 +102,12 @@ function QuizPage() {
             <Question
               key={index}
               index={index + 1}
-              question={q.question}
+              question={q.questionText}
               type={q.type}
-              answers={q.answers}
-              correctAnswer={q.correctAnswer}
+              answers={q.options}
+              correctAnswer={q.correctAnswers}
               handleChange={handleChange}
-              chosen={formData[q.question]}
+              chosen={formData[q.questionText]}
             />
           ))}
           <div className="form-buttons">

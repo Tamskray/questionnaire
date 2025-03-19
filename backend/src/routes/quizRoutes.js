@@ -15,8 +15,22 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const quizzes = await Quiz.find({}, "name description completions"); // Only necessary fields
-    res.json(quizzes);
+    const quizzes = await Quiz.find(
+      {},
+      "name description completions questions"
+    )
+      .select("name description completions questions")
+      .exec();
+
+    const quizData = quizzes.map((quiz) => ({
+      id: quiz._id,
+      name: quiz.name,
+      description: quiz.description,
+      completions: quiz.completions,
+      questionCount: quiz.questions.length,
+    }));
+
+    res.json(quizData);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

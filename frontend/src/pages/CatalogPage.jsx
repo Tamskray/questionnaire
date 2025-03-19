@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
+import { Link } from "react-router";
 import { getAllQuizzes } from "../api/quizzes";
-import { Link, useNavigate } from "react-router";
 
 function CatalogPage() {
   const [quizzesInfo, setQuizzesInfo] = useState([]);
   const [activeMenu, setActiveMenu] = useState(null);
-  const navigate = useNavigate();
 
   const handleMenuOpen = (menuId) => {
     setActiveMenu(menuId);
   };
 
-  useEffect(() => {
-    const info = getAllQuizzes();
+ useEffect(() => {
+   const fetchQuizzes = async () => {
+     const info = await getAllQuizzes();
+     setQuizzesInfo(info);
+   };
 
-    setQuizzesInfo(info);
-  }, []);
+   fetchQuizzes();
+ }, []);
+
 
   return (
     <div>

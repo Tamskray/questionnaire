@@ -2,10 +2,12 @@ import { FaEllipsisVertical } from "react-icons/fa6";
 import "./Card.css";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
+import { deleteQuiz } from "../api/quizzes";
 
 function Card({ quiz, onMenuOpen, activeMenu }) {
   const navigate = useNavigate();
   const menuRef = useRef(null);
+
   const handleRunQuiz = () => navigate(`/quiz/${quiz.id}`);
 
   useEffect(() => {
@@ -29,6 +31,20 @@ function Card({ quiz, onMenuOpen, activeMenu }) {
     }
   };
 
+  const handleEdit = () => {
+    navigate(`/quiz/edit/${quiz.id}`);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const result = await deleteQuiz(quiz.id);
+      alert(result.message);
+      navigate("/");
+    } catch (error) {
+      alert("Failed to delete quiz: " + error.message);
+    }
+  };
+
   return (
     <div className="card-container">
       <div className="card-header">
@@ -40,10 +56,10 @@ function Card({ quiz, onMenuOpen, activeMenu }) {
           <button className="menu-item" onClick={handleRunQuiz}>
             Run Quiz
           </button>
-          <button className="menu-item" onClick={() => alert("Edit Quiz")}>
+          <button className="menu-item" onClick={handleEdit}>
             Edit
           </button>
-          <button className="menu-item" onClick={() => alert("Delete Quiz")}>
+          <button className="menu-item" onClick={handleDelete}>
             Delete
           </button>
         </div>

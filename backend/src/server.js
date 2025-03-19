@@ -8,7 +8,7 @@ const completionRoutes = require("./routes/completionRoutes");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 app.use("/api/quizzes", quizRoutes);
 app.use("/api/completions", completionRoutes);
