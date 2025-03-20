@@ -102,17 +102,23 @@ export const submitQuiz = async (
   completionTime
 ) => {
   try {
-    const response = await fetch(`/api/completions/${quizId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userName,
-        answers,
-        completionTime,
-      }),
-    });
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const response = await fetch(
+      `http://localhost:5000/api/completions/${quizId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userName,
+          answers,
+          completionTime,
+          userTimezone,
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Failed to submit quiz");
