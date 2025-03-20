@@ -193,7 +193,7 @@ const CreatePage = () => {
                           type="text"
                           value={option}
                           onChange={(e) =>
-                            handleOptionChange(index, option, e.target.value)
+                            handleOptionChange(index, i, e.target.value)
                           }
                           placeholder={`Option ${i + 1}`}
                           required
