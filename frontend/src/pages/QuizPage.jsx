@@ -81,8 +81,9 @@ function QuizPage() {
 
     const answers = quiz.questions.map((q) => {
       return {
-        questionId: q._id,
+        questionText: q.questionText,
         response: formData[q.questionText] || [],
+        isCorrect: isAnswerCorrect(q, formData[q.questionText]),
       };
     });
 
@@ -93,32 +94,9 @@ function QuizPage() {
       timeSpent
     );
 
-    const correctAnswersCount = quiz.questions.reduce((count, q) => {
-      const userAnswer = Array.isArray(formData[q.questionText])
-        ? formData[q.questionText]
-        : [formData[q.questionText]];
-
-      const correctAnswer = Array.isArray(q.correctAnswers)
-        ? q.correctAnswers
-        : [q.correctAnswers];
-
-      const normalizedUserAnswer = userAnswer.map((ans) =>
-        ans.toLowerCase().trim()
-      );
-      const normalizedCorrectAnswer = correctAnswer.map((ans) =>
-        ans.toLowerCase().trim()
-      );
-      const isCorrect =
-        JSON.stringify(normalizedUserAnswer.sort()) ===
-        JSON.stringify(normalizedCorrectAnswer.sort());
-
-      console.log(
-        isCorrect,
-        JSON.stringify(normalizedUserAnswer),
-        JSON.stringify(normalizedCorrectAnswer)
-      );
-      return isCorrect ? count + 1 : count;
-    }, 0);
+    const correctAnswersCount = completionData.newCompletion.answers.filter(
+      (answer) => answer.isCorrect
+    ).length;
 
     setResults({
       ...completionData,
@@ -127,6 +105,24 @@ function QuizPage() {
     setQuizSubmitted(true);
     Cookies.remove(`quizTime_${id}`);
     Cookies.remove(`quizData_${id}`);
+  };
+
+  const isAnswerCorrect = (question, userAnswer) => {
+    const correctAnswer = Array.isArray(question.correctAnswers)
+      ? question.correctAnswers
+      : [question.correctAnswers];
+
+    const normalizedUserAnswer = Array.isArray(userAnswer)
+      ? userAnswer.map((ans) => ans.toLowerCase().trim())
+      : [userAnswer.toLowerCase().trim()];
+
+    const normalizedCorrectAnswer = correctAnswer.map((ans) =>
+      ans.toLowerCase().trim()
+    );
+    return (
+      JSON.stringify(normalizedUserAnswer.sort()) ===
+      JSON.stringify(normalizedCorrectAnswer.sort())
+    );
   };
 
   const handleClear = (event) => {

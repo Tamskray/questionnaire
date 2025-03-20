@@ -5,8 +5,9 @@ const CompletionSchema = new mongoose.Schema({
   userName: { type: String, required: true },
   answers: [
     {
-      questionId: { type: mongoose.Schema.Types.ObjectId, required: true },
+      questionText: { type: String, required: true },
       response: [{ type: String }],
+      isCorrect: { type: Boolean, required: true },
     },
   ],
   completionTime: { type: Number, required: true },
