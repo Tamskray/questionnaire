@@ -6,6 +6,7 @@ function Question({
   correctAnswer,
   handleChange,
   chosen,
+  disabled
 }) {
   let questionStyle = null;
   switch (type) {
@@ -23,6 +24,7 @@ function Question({
                   onChange={handleChange}
                   value={answer}
                   checked={chosen === answer}
+                  disabled={disabled}
                 />
                 <label>{answer}</label>
               </div>
@@ -45,6 +47,7 @@ function Question({
                   onChange={handleChange}
                   value={answer}
                   checked={chosen?.includes(answer)}
+                  disabled={disabled}
                 />
                 <label>{answer}</label>
               </div>
@@ -66,6 +69,7 @@ function Question({
               onChange={handleChange}
               value={chosen || ""}
               placeholder="Enter your answer"
+              disabled={disabled}
             />
           </div>
         </div>

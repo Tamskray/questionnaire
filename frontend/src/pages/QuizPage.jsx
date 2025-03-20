@@ -172,15 +172,13 @@ function QuizPage() {
           </label>
 
           {quiz.questions.map((q, index) => {
-            // Ensure userAnswer is always an array
             const userAnswer = Array.isArray(formData[q.questionText])
               ? formData[q.questionText]
               : formData[q.questionText]
               ? [formData[q.questionText]]
               : [];
             const correctAnswer = q.correctAnswers;
-            const isCorrect =
-              JSON.stringify(userAnswer) === JSON.stringify(correctAnswer);
+            const isCorrect = isAnswerCorrect(q, userAnswer)
 
             return (
               <div key={index} className="question-block">
