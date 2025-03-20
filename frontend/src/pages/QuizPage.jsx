@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import Cookies from "js-cookie";
 import { getQuiz, submitQuiz } from "../api/quizzes";
 import Question from "../components/Question";
@@ -178,7 +178,7 @@ function QuizPage() {
               ? [formData[q.questionText]]
               : [];
             const correctAnswer = q.correctAnswers;
-            const isCorrect = isAnswerCorrect(q, userAnswer)
+            const isCorrect = isAnswerCorrect(q, userAnswer);
 
             return (
               <div key={index} className="question-block">
@@ -205,6 +205,8 @@ function QuizPage() {
           })}
 
           <div className="form-buttons">
+            <Link className="link" to={'/'}>Back</Link>
+
             <button
               className="clear-button"
               onClick={handleClear}

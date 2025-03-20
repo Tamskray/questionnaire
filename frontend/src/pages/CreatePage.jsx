@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { createQuiz, updateQuiz, getQuiz } from "../api/quizzes";
 import "./CreatePage.css";
 
@@ -161,7 +161,6 @@ const CreatePage = () => {
     }
   };
 
-
   return (
     <div>
       <h1>{id ? "Edit Quiz" : "Create New Quiz"}</h1>
@@ -313,9 +312,14 @@ const CreatePage = () => {
           <button type="button" className="add-question" onClick={addQuestion}>
             Add Question
           </button>
-          <button type="submit" className="submit-button">
-            {id ? "Update Quiz" : "Submit Quiz"}
-          </button>
+          <div>
+            <Link className="link" to={"/"}>
+              Back
+            </Link>
+            <button type="submit" className="submit-button">
+              {id ? "Update Quiz" : "Submit Quiz"}
+            </button>
+          </div>
         </div>
       </form>
     </div>
