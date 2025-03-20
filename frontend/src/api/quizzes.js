@@ -1,8 +1,8 @@
-import { quizzes } from "../quizzes";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getAllQuizzes = async () => {
   try {
-    const response = await fetch("http://localhost:5000/api/quizzes");
+    const response = await fetch(`${apiUrl}/api/quizzes`);
     if (!response.ok) {
       throw new Error("Failed to fetch quizzes");
     }
@@ -22,7 +22,7 @@ export const getAllQuizzes = async () => {
 
 export const getQuiz = async (id) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/quizzes/${id}`);
+    const response = await fetch(`${apiUrl}/api/quizzes/${id}`);
     if (!response.ok) {
       throw new Error("Failed to fetch quiz data");
     }
@@ -36,7 +36,7 @@ export const getQuiz = async (id) => {
 
 export const updateQuiz = async (id, updatedQuizData) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/quizzes/${id}`, {
+    const response = await fetch(`${apiUrl}/api/quizzes/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export const updateQuiz = async (id, updatedQuizData) => {
 
 export const createQuiz = async (quizData) => {
   try {
-    const response = await fetch("http://localhost:5000/api/quizzes", {
+    const response = await fetch(`${apiUrl}/api/quizzes`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -79,7 +79,7 @@ export const createQuiz = async (quizData) => {
 
 export const deleteQuiz = async (id) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/quizzes/${id}`, {
+    const response = await fetch(`${apiUrl}/api/quizzes/${id}`, {
       method: "DELETE",
     });
 
@@ -104,21 +104,18 @@ export const submitQuiz = async (
   try {
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    const response = await fetch(
-      `http://localhost:5000/api/completions/${quizId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userName,
-          answers,
-          completionTime,
-          userTimezone,
-        }),
-      }
-    );
+    const response = await fetch(`${apiUrl}/api/completions/${quizId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userName,
+        answers,
+        completionTime,
+        userTimezone,
+      }),
+    });
 
     if (!response.ok) {
       throw new Error("Failed to submit quiz");
