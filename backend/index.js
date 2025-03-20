@@ -3,8 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const quizRoutes = require("./routes/quizRoutes");
-const completionRoutes = require("./routes/completionRoutes");
+const quizRoutes = require("./src/routes/quizRoutes");
+const completionRoutes = require("./src/routes/completionRoutes");
 
 const app = express();
 app.use(express.json());
