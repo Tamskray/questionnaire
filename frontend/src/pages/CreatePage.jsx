@@ -39,19 +39,24 @@ const CreatePage = () => {
     setQuestions(updatedQuestions);
   };
 
-  const handleCorrectAnswerChange = (index, optionIndex) => {
+  const handleCorrectAnswerChange = (index, optionText) => {
     const updatedQuestions = [...questions];
     const correctAnswers = updatedQuestions[index].correctAnswers || [];
 
-    if (correctAnswers.includes(optionIndex.toString())) {
-      updatedQuestions[index].correctAnswers = correctAnswers.filter(
-        (i) => i !== optionIndex.toString()
-      );
+    if (updatedQuestions[index].type === "single") {
+      updatedQuestions[index].correctAnswers = [optionText]; // Only one correct answer for single choice
     } else {
-      updatedQuestions[index].correctAnswers = [
-        ...correctAnswers,
-        optionIndex.toString(),
-      ];
+      // Multiple answers allowed for multiple choice
+      if (correctAnswers.includes(optionText)) {
+        updatedQuestions[index].correctAnswers = correctAnswers.filter(
+          (answer) => answer !== optionText
+        );
+      } else {
+        updatedQuestions[index].correctAnswers = [
+          ...correctAnswers,
+          optionText,
+        ];
+      }
     }
 
     setQuestions(updatedQuestions);
@@ -67,7 +72,7 @@ const CreatePage = () => {
     );
 
     updatedQuestions[questionIndex].correctAnswers = correctAnswers.filter(
-      (i) => i !== optionIndex.toString()
+      (answer) => answer !== options[optionIndex]
     );
 
     setQuestions(updatedQuestions);
@@ -91,13 +96,50 @@ const CreatePage = () => {
     }
   };
 
+  const validateQuiz = () => {
+    // Check if each question has at least two options for single/multiple choice
+    for (const question of questions) {
+      if (question.type !== "text" && question.options.length < 2) {
+        return "Each single or multiple choice question must have at least two options.";
+      }
+      if (
+        question.correctAnswers.length === 0 ||
+        (question.type === "single" && question.correctAnswers.length > 1)
+      ) {
+        return "Each question must have a valid correct answer.";
+      }
+    }
+    return null; // Validation passed
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Run validation before submitting
+    const validationError = validateQuiz();
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+
+    // Ensure correct answers are in the options array and remove any invalid ones
+    const updatedQuestions = questions.map((question) => {
+      if (question.type !== "text") {
+        // Filter correct answers that are not in options
+        const validCorrectAnswers = question.correctAnswers.filter(
+          (correctAnswer) => question.options.includes(correctAnswer)
+        );
+
+        // Update the question with only valid correct answers
+        return { ...question, correctAnswers: validCorrectAnswers };
+      }
+      return question;
+    });
 
     const quizData = {
       name: quizName,
       description: quizDescription,
-      questions: questions.map((q) => ({
+      questions: updatedQuestions.map((q) => ({
         questionText: q.questionText,
         type: q.type,
         options: q.options,
@@ -118,6 +160,7 @@ const CreatePage = () => {
       alert("Quiz creation/update failed:", error);
     }
   };
+
 
   return (
     <div>
@@ -202,9 +245,7 @@ const CreatePage = () => {
                           {question.type === "multiple" ? (
                             <input
                               type="checkbox"
-                              checked={question.correctAnswers.includes(
-                                option.toString()
-                              )}
+                              checked={question.correctAnswers.includes(option)}
                               onChange={() =>
                                 handleCorrectAnswerChange(index, option)
                               }
@@ -213,9 +254,7 @@ const CreatePage = () => {
                             <input
                               type="radio"
                               name={`question_${index}`}
-                              checked={question.correctAnswers.includes(
-                                option.toString()
-                              )}
+                              checked={question.correctAnswers.includes(option)}
                               onChange={() =>
                                 handleCorrectAnswerChange(index, option)
                               }
