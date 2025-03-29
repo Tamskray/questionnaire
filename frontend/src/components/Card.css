@@ -5,6 +5,14 @@
   position: relative;
   display: flex;
   flex-direction: column;
+
+  svg {
+    cursor: pointer;
+
+    &:hover {
+      opacity: 70%;
+    }
+  }
 }
 
 .card-title {

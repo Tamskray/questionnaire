@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import "./App.css";
 import CatalogPage from "./pages/CatalogPage";
 import MainLayout from "./layouts/MainLayout";
 import QuizPage from "./pages/QuizPage";
 import CreatePage from "./pages/CreatePage";
 
-function App() {
+import "./App.css";
 
+function App() {
   return (
     <>
       <BrowserRouter>

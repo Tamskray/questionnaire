@@ -8,11 +8,7 @@ export const getAllQuizzes = async () => {
     }
     const data = await response.json();
     return data.map((quiz) => ({
-      id: quiz.id,
-      name: quiz.name,
-      description: quiz.description,
-      completions: quiz.completions,
-      questionCount: quiz.questionCount,
+      ...quiz,
     }));
   } catch (error) {
     console.error("Error fetching quizzes:", error);
@@ -95,12 +91,7 @@ export const deleteQuiz = async (id) => {
   }
 };
 
-export const submitQuiz = async (
-  quizId,
-  userName,
-  answers,
-  completionTime
-) => {
+export const submitQuiz = async (quizId, userName, answers, completionTime) => {
   try {
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -128,4 +119,3 @@ export const submitQuiz = async (
     throw error;
   }
 };
-

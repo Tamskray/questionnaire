@@ -11,6 +11,7 @@ function QuizPage() {
   const [timeSpent, setTimeSpent] = useState(0);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [results, setResults] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const quizSubmittedFlag = Cookies.get(`quizSubmitted_${id}`);
@@ -57,6 +58,11 @@ function QuizPage() {
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
+
+    if (value && name === "username") {
+      setError("");
+    }
+
     let updatedData = { ...formData };
 
     if (type === "checkbox") {
@@ -78,6 +84,11 @@ function QuizPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!formData.username) {
+      setError("You must provide a name");
+      return;
+    }
 
     const answers = quiz.questions.map((q) => {
       return {
@@ -128,6 +139,7 @@ function QuizPage() {
   const handleClear = (event) => {
     event.preventDefault();
     setFormData({});
+    setError("");
     Cookies.remove(`quizData_${id}`);
   };
 
@@ -205,7 +217,9 @@ function QuizPage() {
           })}
 
           <div className="form-buttons">
-            <Link className="link" to={'/'}>Back</Link>
+            <Link className="link" to={"/"}>
+              Back
+            </Link>
 
             <button
               className="clear-button"
@@ -222,6 +236,8 @@ function QuizPage() {
               Submit
             </button>
           </div>
+
+          {error && <div>Where is the name?</div>}
         </form>
       </div>
     </div>

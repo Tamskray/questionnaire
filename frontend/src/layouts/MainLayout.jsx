@@ -1,10 +1,10 @@
-import { Outlet, useLocation } from "react-router";
+import { Outlet } from "react-router";
 
 function MainLayout() {
   return (
-    <div>
+    <main>
       <Outlet />
-    </div>
+    </main>
   );
 }
 
