@@ -4,6 +4,8 @@ import Cookies from "js-cookie";
 import { getQuiz, submitQuiz } from "../api/quizzes";
 import Question from "../components/Question";
 
+// TODO: add proper validation using a lib, e.g. react-hook-form
+
 function QuizPage() {
   const { id } = useParams();
   const [quiz, setQuiz] = useState(null);
@@ -11,7 +13,7 @@ function QuizPage() {
   const [timeSpent, setTimeSpent] = useState(0);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [results, setResults] = useState(null);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({ username: "", questions: "" });
 
   useEffect(() => {
     const quizSubmittedFlag = Cookies.get(`quizSubmitted_${id}`);
@@ -60,7 +62,11 @@ function QuizPage() {
     const { name, value, type, checked } = event.target;
 
     if (value && name === "username") {
-      setError("");
+      setErrors((prev) => ({ ...prev, username: "" }));
+    }
+
+    if (value) {
+      setErrors((prev) => ({ ...prev, questions: "" }));
     }
 
     let updatedData = { ...formData };
@@ -85,12 +91,24 @@ function QuizPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    let hasError = false;
+
     if (!formData.username) {
-      setError("You must provide a name");
+      setErrors((prev) => ({ ...prev, username: "You must provide a name" }));
       return;
     }
 
     const answers = quiz.questions.map((q) => {
+      if (!formData[q.questionText]) {
+        setErrors((prev) => ({
+          ...prev,
+          questions: "You must answer all questions",
+        }));
+        hasError = true;
+
+        return;
+      }
+
       return {
         questionText: q.questionText,
         response: formData[q.questionText] || [],
@@ -98,24 +116,26 @@ function QuizPage() {
       };
     });
 
-    const completionData = await submitQuiz(
-      id,
-      formData.username,
-      answers,
-      timeSpent
-    );
+    if (!hasError) {
+      const completionData = await submitQuiz(
+        id,
+        formData.username,
+        answers,
+        timeSpent
+      );
 
-    const correctAnswersCount = completionData.newCompletion.answers.filter(
-      (answer) => answer.isCorrect
-    ).length;
+      const correctAnswersCount = completionData.newCompletion.answers.filter(
+        (answer) => answer.isCorrect
+      ).length;
 
-    setResults({
-      ...completionData,
-      correctAnswersCount,
-    });
-    setQuizSubmitted(true);
-    Cookies.remove(`quizTime_${id}`);
-    Cookies.remove(`quizData_${id}`);
+      setResults({
+        ...completionData,
+        correctAnswersCount,
+      });
+      setQuizSubmitted(true);
+      Cookies.remove(`quizTime_${id}`);
+      Cookies.remove(`quizData_${id}`);
+    }
   };
 
   const isAnswerCorrect = (question, userAnswer) => {
@@ -139,7 +159,7 @@ function QuizPage() {
   const handleClear = (event) => {
     event.preventDefault();
     setFormData({});
-    setError("");
+    setErrors({ username: "", questions: "" });
     Cookies.remove(`quizData_${id}`);
   };
 
@@ -237,7 +257,8 @@ function QuizPage() {
             </button>
           </div>
 
-          {error && <div>Where is the name?</div>}
+          {errors.username && <p className="link">{errors.username}</p>}
+          {errors.questions && <p className="link">{errors.questions}</p>}
         </form>
       </div>
     </div>
